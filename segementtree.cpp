@@ -9,6 +9,7 @@ public:
    void build(int idx,int low,int high,vector<int>arr){
        if(low == high){
            sg[idx] = arr[low];
+           return;
        }
        int mid = (low+high)/2;
         build(2*idx+1,low,mid,arr);
@@ -16,7 +17,7 @@ public:
         sg[idx] = min(sg[2*idx+1],sg[2*idx+2]);    
    }
    int qurie(int idx,int low , int high,int l, int h){
-      if(h<low || high>l){
+      if(h<low || high<l){
           return INT_MAX;
       }
       if(low>=l && high<=h){
@@ -32,9 +33,9 @@ public:
            sg[idx] = value;
            return;
        }
-       int mid = (low+high)/2;
+       int mid = (low+high)>>1;
        if(i<=mid) update(2*idx+1,low,mid,i,value);
-       else update(2*idx+2,low,high,i,value);
+       else update(2*idx+2,mid+1,high,i,value);
        sg[idx] = min(sg[2*idx+1],sg[2*idx+2]);
    }
 };
@@ -45,13 +46,14 @@ int main(){
     for(int i=0;i<n1;i++) cin>>arr1[i];
     SGtree* s1 = new SGtree(n1);
     s1->build(0,0,n1-1,arr1);
-    
+    //cout<<s1->sg[0];
     int n2;
     cin>>n2;
-    vector<int>arr2(n1);
-    for(int i=0;i<n1;i++) cin>>arr2[i];
+    vector<int>arr2(n2);
+    for(int i=0;i<n2;i++) cin>>arr2[i];
     SGtree* s2 = new SGtree(n2);
     s2->build(0,0,n2-1,arr2);
+    //cout<<s2->sg[0];
     int q;
     cin>>q;
     while(q--){
@@ -78,5 +80,7 @@ int main(){
             }
         }
     }
+    delete s1;
+    delete s2;
     return 0;
 }

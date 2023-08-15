@@ -39,7 +39,17 @@ public:
    
     int findsum(int start, int end){
         return (sum(end) - sum(start - 1));
-    }  
+    } 
+    int lower_bound_sum(int k){
+        int ans=0,nums=0,curr=0;
+        for(int i=log(n);i>=0;i--){
+            if(fenvicktree[curr+ (1<<i)]+nums<k){
+                curr = curr + (1<<i);
+                nums = nums+ fenvicktree[curr];
+            }
+        }
+        return (curr+1);
+    } 
 };
 
 int main() {
@@ -51,6 +61,6 @@ int main() {
    
     Fentree f(n);
     f.build(arr);
-    cout<<f.findsum(1,1)<<endl;
+    cout<<f.lower_bound_sum(11)<<endl;
     return 0;
 }
